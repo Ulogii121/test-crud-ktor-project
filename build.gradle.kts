@@ -67,6 +67,10 @@ dependencies {
     implementation(group = "org.postgresql", name = "postgresql", version = "42.5.1")
     implementation("com.zaxxer:HikariCP:5.0.1")
     testImplementation(kotlin("test"))
+
+    implementation("io.rest-assured:rest-assured:3.3.0")
+    implementation("org.hibernate:hibernate-core:6.2.7.Final")
+
 }
 
 tasks.test {
