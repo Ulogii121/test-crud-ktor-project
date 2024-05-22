@@ -70,6 +70,9 @@ dependencies {
 
     implementation("io.rest-assured:rest-assured:3.3.0")
     implementation("org.hibernate:hibernate-core:6.2.7.Final")
+    // testImplementation(group = "org.junit.jupiter", name = "junit-jupiter", version = junitVersion)
+    // testImplementation(group = "org.junit.jupiter", name = "junit-jupiter-api", version = junitVersion)
+
 
 }
 

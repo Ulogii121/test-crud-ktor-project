@@ -12,7 +12,7 @@ public class DatabaseConnector {
                 .setProperty("hibernate.connection.password", "password")
                 .setProperty("hibernate.connection.driver_class", "org.postgresql.Driver")
                 .setProperty("hibernate.show_sql", "true")
-                .addAnnotatedClass(UserModelTable.class)
+                //.addAnnotatedClass(UserModelTable.class)
                 .buildSessionFactory();
     }
 }
