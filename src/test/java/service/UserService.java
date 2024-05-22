@@ -28,4 +28,29 @@ public class UserService {
                 .extract()
                 .as(User.class);
     }
+
+    public User postUser(User request) {
+        return RestAssured
+                .given()
+                .spec(specUsers)
+                .body(request)
+                .post("user")
+                .then()
+                .statusCode(201)
+                .extract()
+                .as(User.class);
+    }
+
+    public User[] getUsers(String searchQuery, Integer limit) {
+        return RestAssured
+                .given()
+                .spec(specUsers)
+                .queryParam("searchQuery", searchQuery)
+                .queryParam("limit", limit)
+                .get("users")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(User[].class);
+    }
 }

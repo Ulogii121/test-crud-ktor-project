@@ -22,12 +22,39 @@ public class UserServiceTest {
     @Test
     void getUser() {
         User userFromService = userService.getUser(1);
-        UserModelTable userFromDB = session.find(UserModelTable.class, 1);
+        UserModelTable userFromDb = session.find(UserModelTable.class, 1);
 
-        Assertions.assertEquals(userFromService.getLogin(), userFromDB.getLogin());
-        Assertions.assertEquals(userFromService.getFirstName(), userFromDB.getFirstName());
-        Assertions.assertEquals(userFromService.getSurname(), userFromDB.getSurname(), "surname");
-        Assertions.assertEquals(userFromService.getPatronymic(), userFromDB.getPatronymic());
+        Assertions.assertEquals(userFromService.getLogin(), userFromDb.getLogin());
+        Assertions.assertEquals(userFromService.getFirstName(), userFromDb.getFirstName());
+        Assertions.assertEquals(userFromService.getSurname(), userFromDb.getSurname(), "surname");
+        Assertions.assertEquals(userFromService.getPatronymic(), userFromDb.getPatronymic());
+    }
+
+    @Test
+    void postUser() {
+        User userRequest = new User();
+        userRequest.setLogin("n.mayurov");
+        userRequest.setFirstName("Nikita");
+        userRequest.setSurname("Mayurov");
+        userRequest.setPatronymic("Alekseevich");
+
+        User userFromService = userService.postUser(userRequest);
+        UserModelTable userFromDb = session.find(UserModelTable.class, userFromService.getId());
+
+        Assertions.assertEquals(userFromService.getLogin(), userFromDb.getLogin());
+        Assertions.assertEquals(userFromService.getFirstName(), userFromDb.getFirstName());
+        Assertions.assertEquals(userFromService.getSurname(), userFromDb.getSurname(), "surname");
+        Assertions.assertEquals(userFromService.getPatronymic(), userFromDb.getPatronymic());
+    }
+
+    @Test
+    void deleteUser() {
+        User userEntity = new User();
+        userEntity.setId(3000);
+        userEntity.setLogin("n.mayurov");
+        userEntity.setFirstName("Nikita");
+        userEntity.setSurname("Mayurov");
+        userEntity.setPatronymic("Alekseevich");
     }
 
     @AfterAll
