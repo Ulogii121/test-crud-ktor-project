@@ -1,32 +1,43 @@
 package autotests;
 
-import io.restassured.RestAssured;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.http.ContentType;
-import io.restassured.specification.RequestSpecification;
+import api.UserApi;
+import database.DatabaseConnector;
+import database.UserTable;
 import objects.UserObject;
+import org.hibernate.Session;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class UsersTest {
-    private RequestSpecification specUser =
-            RestAssured
-                    .given()
-                    .filter(new RequestLoggingFilter())
-                    .filter(new ResponseLoggingFilter())
-                    .contentType(ContentType.JSON)
-                    .baseUri("http://localhost:8080")
-                    .basePath("/test-crud-ktor-project/");
+    static Session session;
+    static UserApi userApi;
+
+    @BeforeAll
+    static void getConnection() {
+        session = DatabaseConnector.getSessionFactory().openSession();
+        userApi = new UserApi();
+    }
 
     @Test
     public void testGetUser() {
-        UserObject userFromService = RestAssured
-                .given()
-                .spec(specUser)
-                .get("user/18")
-                .then()
-                .statusCode(200)
-                .extract()
-                .as(UserObject.class);
+        int userId = 18;
+
+        UserObject userFromService = userApi.getUserById(userId);
+
+        UserTable userFromDb = session.find(UserTable.class, userId);
+
+        Assertions.assertEquals(userFromService.getLogin(), userFromDb.getLogin(), "Поле login");
+        Assertions.assertEquals(userFromService.getSurname(), userFromDb.getSurname());
+        Assertions.assertEquals(userFromService.getFirstName(), userFromDb.getFirstName());
+        Assertions.assertEquals(userFromService.getPatronymic(), userFromDb.getPatronymic());
+    }
+
+    @Test
+
+    @AfterAll
+    static void closeConnection() {
+        session.close();
     }
 }
